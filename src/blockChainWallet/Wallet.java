@@ -27,7 +27,7 @@ public class Wallet {
 			keyGen.initialize(ecSpec, random); // 256 byte cung cấp mức bảo mật có thể chấp nhận được
 			KeyPair keyPair = keyGen.generateKeyPair();
 			
-			// �?ặt khóa công khai và khóa riêng tư từ keyPair
+			// Dat khóa công khai và khóa riêng tư từ keyPair
 			privateKey = keyPair.getPrivate();
 			publicKey = keyPair.getPublic();
 		} catch (Exception e) {
@@ -55,7 +55,7 @@ public class Wallet {
 	}
 	
 	/** 
-	 * Tạo và trả v�? một giao dịch mới từ ví này.
+	 * Tạo và trả ve một giao dịch mới từ ví này.
 	 */
 	public Transaction sendFunds(PublicKey _recipient, float value) {
 		// thu thập số dư và kiểm tra quỹ.

@@ -6,10 +6,10 @@ import java.util.ArrayList;
 public class Transaction {
 	
 	public String transactionId; // đây cũng là băm của giao dịch.
-	public PublicKey sender; // địa chỉ ngư�?i gửi / khóa công khai.
-	public PublicKey reciepient;// �?ịa chỉ ngư�?i nhận / khóa công khai.
+	public PublicKey sender; // địa chỉ ngư�?i gửi / khóa công khai.
+	public PublicKey reciepient;// �?ịa chỉ ngư�?i nhận / khóa công khai.
 	public float value;
-	public byte[] signature; // đi�?u này là để ngăn không cho bất kỳ ai khác chi tiêu ti�?n trong ví của người kha�?c
+	public byte[] signature; // đi�?u này là để ngăn không cho bất kỳ ai khác chi tiêu ti�?n trong ví của người kha�?c
 	
 	public ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
 	public ArrayList<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
@@ -23,7 +23,7 @@ public class Transaction {
 		this.inputs = inputs;
 	}
 	
-	// �?i�?u này Tính toán hash giao dịch (sẽ được sử dụng làm Id của nó)
+	// �?i�?u này Tính toán hash giao dịch (sẽ được sử dụng làm Id của nó)
 	private String calulateHash() {
 		sequence++;// tăng chuỗi để tránh 2 giao dịch giống nhau có cùng một hash 
 		return StringUtil.applySha256(StringUtil.getStringFromKey(sender) 
@@ -31,7 +31,7 @@ public class Transaction {
 		+ Float.toString(value) + sequence);
 	}
 	
-	// Trả v�? true nếu có thể tạo giao dịch mới.
+	// Trả ve true nếu có thể tạo giao dịch mới.
 	public boolean processTransaction() {
 		
 		if (verifiySignature() == false) {
@@ -39,7 +39,7 @@ public class Transaction {
 			return false;
 		}
 		
-		// thu thập các đầu vào giao dịch (�?ảm bảo chúng chưa được sử dụng):
+		// thu thập các đầu vào giao dịch (Dảm bảo chúng chưa được sử dụng):
 		for (TransactionInput i : inputs) {
 			i.UTXO = Main.UTXOs.get(i.transactionOutputId);
 		}
@@ -53,36 +53,36 @@ public class Transaction {
 		// tạo kết quả giao dịch:
 		float leftOver = getInputsValue() - value; // lấy giá trị của đầu vào sau đó thay đổi bên trái:
 		transactionId = calulateHash();
-		outputs.add(new TransactionOutput(this.reciepient, value, transactionId)); // gửi giá trị cho ngư�?i nhận
-		outputs.add(new TransactionOutput(this.sender, leftOver, transactionId)); // gửi lại 'thay đổi' còn lại cho ngư�?i gửi
+		outputs.add(new TransactionOutput(this.reciepient, value, transactionId)); // gửi giá trị cho ngư�?i nhận
+		outputs.add(new TransactionOutput(this.sender, leftOver, transactionId)); // gửi lại 'thay đổi' còn lại cho ngư�?i gửi
 		
 		// thêm đầu ra vào danh sách Chưa gửi
 		for (TransactionOutput o : outputs) {
 			Main.UTXOs.put(o.id, o);
 		}
 		
-		// xóa đầu vào giao dịch kh�?i danh sách UTXO như đã chi tiêu:
+		// xóa đầu vào giao dịch khoi danh sách UTXO như đã chi tiêu:
 		for (TransactionInput i : inputs) {
 			if (i.UTXO == null)
-				continue; // nếu không tìm thấy Giao dịch, hãy b�? qua
+				continue; // nếu không tìm thấy Giao dịch, hãy b�? qua
 			Main.UTXOs.remove(i.UTXO.id);
 		}
 		
 		return true;
 	}
 	
-	// trả v�? tổng giá trị đầu vào (UTXO)
+	// trả v�? tổng giá trị đầu vào (UTXO)
 	public float getInputsValue() {
 		float total = 0;
 		for (TransactionInput i : inputs) {
 			if (i.UTXO == null)
-				continue; // nếu không tìm thấy Giao dịch, hãy b�? qua
+				continue; // nếu không tìm thấy Giao dịch, hãy b�? qua
 			total += i.UTXO.value;
 		}
 		return total;
 	}
 	
-	// trả v�? tổng kết quả đầu ra:
+	// trả ve tổng kết quả đầu ra:
 	public float getOutputsValue() {
 		float total = 0;
 		for (TransactionOutput o : outputs) {

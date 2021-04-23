@@ -14,7 +14,7 @@ import java.util.Base64;
  */
 public class StringUtil {
 	/**
-	 * �?p dụng Sha256 cho một chuỗi và trả v�? kết quả.
+	 * Ap dụng Sha256 cho một chuỗi và trả ve kết quả.
 	 * @param input String chuỗi cần mã hóa
 	 * @return chữ ký
 	 */
@@ -22,7 +22,7 @@ public class StringUtil {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			
-			// �?p dụng sha256 cho đầu vào của chúng tôi,
+			// �?p dụng sha256 cho đầu vào của chúng tôi,
 			byte[] hash = digest.digest(input.getBytes("UTF-8"));
 			StringBuffer hexString = new StringBuffer(); 
 			
@@ -39,7 +39,7 @@ public class StringUtil {
 	}
 	
 	/**
-	 * �?p dụng Chữ ký ECDSA và trả v�? kết quả (dưới dạng byte).
+	 * Ap dụng Chữ ký ECDSA và trả ve kết quả (dưới dạng byte).
 	 * @return byte[]
 	 */
 	public static byte[] applyECDSASig(PrivateKey privateKey, String input) {
@@ -60,7 +60,7 @@ public class StringUtil {
 	
 	/**
 	 * Xác minh chữ ký chuỗi <br>
-	 * lấy chữ ký, khoá công khai và chuỗi dữ liệu và trả v�? true hoặc false nếu chữ ký là hợp lệ
+	 * lấy chữ ký, khoá công khai và chuỗi dữ liệu 
 	 * @return true nếu đúng
 	 */
 	public static boolean verifyECDSASig(PublicKey publicKey, String data, byte[] signature) {
@@ -75,14 +75,14 @@ public class StringUtil {
 	}
 	
 	/**
-	 * trả v�? chuỗi được mã hoá từ bất kỳ khóa nào.
+	 * trả ve chuỗi được mã hoá từ bất kỳ khóa nào.
 	 */
 	public static String getStringFromKey(Key key) {
 		return Base64.getEncoder().encodeToString(key.getEncoded());
 	}
 	
 	/** 
-	 * �?ánh vào mảng các giao dịch và trả v�? một gốc merkle.
+	 * �?ánh vào mảng các giao dịch và trả ve một gốc merkle.
 	 */
 	public static String getMerkleRoot(ArrayList<Transaction> transactions) {
 		int count = transactions.size();

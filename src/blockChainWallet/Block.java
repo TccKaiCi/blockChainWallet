@@ -7,6 +7,7 @@ public class Block {
 	
 	public String hash;
 	public String previousHash; 
+	
 	public String merkleRoot;
 	public ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	public long timeStamp;
@@ -43,7 +44,7 @@ public class Block {
 	}
 	
 	/**
-	 * xử lý giao dịch và kiểm tra xem có hợp lệ không, trừ khi block là block gốc thì b�? qua.
+	 * xử lý giao dịch và kiểm tra xem có hợp lệ không, trừ khi block là block gốc thì bo qua.
 	 * @return
 	 */
 	public boolean addTransaction(Transaction transaction) {

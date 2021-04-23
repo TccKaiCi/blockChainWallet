@@ -1,6 +1,10 @@
 package blockChainWallet;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
 import java.security.Security;
+import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,8 +94,27 @@ public class Main {
 		block.addTransaction(playerA.getWallet().sendFunds(playerB.getWallet().publicKey , 40));
 		addBlock(block);
 		
+		System.out.println("\nA gửi B: 40 đồng");
+		block = new Block(blockchain.get(blockchain.size() - 1).hash);
+		block.addTransaction(playerA.getWallet().sendFunds(playerB.getWallet().publicKey , 40));
+		addBlock(block);
+		
 		getInforMoney();
 		isChainValid();
+	}
+	
+	public static void getInforChain() {
+		for (Block block : blockchain) {
+			System.out.println("\n1 Block");
+			System.out.println(block.hash);
+			System.out.println(block.previousHash);
+			System.out.println(block.merkleRoot);
+			System.out.println(block.timeStamp);
+			System.out.println(block.nonce);
+			for (Transaction a : block.transactions) {
+				System.out.println(a);
+			}
+		}
 	}
 	
 	public static void addBlock(Block newBlock) {
@@ -102,17 +125,17 @@ public class Main {
 	public static void getInforMoney() {
 		System.out.println("\nVí ti�?n của He thong: " + walletSys.getBalance());
 		accList.getInforAll();
-//		System.out.println("Ví ti�?n của A: " + A.getWallet().getBalance());
-//		System.out.println("Ví ti�?n của B: " + walletB.getBalance());
 	}
 	
 	public static void getInfor() {
-//		String temp = StringUtil.getStringFromKey( A.getWallet().getPrivateKey());
-//		System.out.println("\nA:\nPB:" + StringUtil.getStringFromKey( A.getWallet().getPublicKey() ) 
-//		+ "\nPR:" + temp );
-//		
-//		System.out.println("B:\nPB:" + StringUtil.getStringFromKey( walletB.getPublicKey() ) 
-//		+ "\nPR:" + StringUtil.getStringFromKey( walletB.getPrivateKey() ));
+		for (Account a : accList.getListAcc()) {
+			String temp = StringUtil.getStringFromKey( a.getWallet().getPrivateKey());
+			
+			System.out.println("\nWallet"+a.getUserName()+
+					":\nPB:" + StringUtil.getStringFromKey( a.getWallet().getPublicKey() ) 
+			+ "\nPR:" + StringUtil.applySha256(temp) );
+			
+		}
 	}
 	
 	public static void napTien(Block pre, Wallet wallet) {
@@ -122,7 +145,7 @@ public class Main {
 		addBlock(block);
 		
 		
-		System.out.print("\nSau khi nạp ti�?n: ");
+		System.out.print("\nSau khi nạp tien: ");
 		getInforMoney();      
 	}
 	

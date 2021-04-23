@@ -27,6 +27,10 @@ public class AccountHR {
     	return false;
     }
     
+    public List<Account> getListAcc() {
+    	return accList;
+    }
+    
     public Account getAccount(Account acc) {
     	for (Account a : accList) {
     		if ( a.getUserName().equals(acc.getUserName()) && a.signIn(acc.getPassWord())) {
