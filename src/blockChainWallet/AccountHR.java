@@ -2,11 +2,12 @@ package blockChainWallet;
 
 import java.util.*;
 import java.io.*;
+import java.security.PublicKey;
 
 public class AccountHR {
 	private List<Account> accList;
 	
-	private String File_Users  ="./src/Qly_NhanSu/Account/acc.txt";
+	private String File_Users  ="acc.txt";
     
     Scanner gets = new Scanner(System.in);
 	
@@ -34,6 +35,26 @@ public class AccountHR {
     public Account getAccount(Account acc) {
     	for (Account a : accList) {
     		if ( a.getUserName().equals(acc.getUserName()) && a.signIn(acc.getPassWord())) {
+    			return a;
+    		}
+    	}
+    	return null;
+    }
+    
+    public PublicKey getPublicKey(String name) {
+    	for (Account a : accList) {
+    		if ( a.getUserName().equalsIgnoreCase(name) ) {
+    			return a.getWallet().getPublicKey();
+    		}
+    	}
+    	return null;
+    }
+    
+    public Account getAccountByPublicKey(String key) {
+    	for (Account a : accList) {
+    		String temp = StringUtil.getStringFromKey( a.getWallet().getPublicKey() );
+    		temp = StringUtil.applySha256(temp);
+    		if ( temp.equals(key) ) {
     			return a;
     		}
     	}

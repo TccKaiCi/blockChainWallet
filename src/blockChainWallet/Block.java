@@ -21,6 +21,7 @@ public class Block {
 	
 	// Tính toán hàm hash mới dựa trên nội dung block
 	public String calculateHash() {
+		// Ap dung thuat toan ham bam
 		String calculatedhash = StringUtil.applySha256( 
 				previousHash +
 				Long.toString(timeStamp) +
@@ -40,7 +41,7 @@ public class Block {
 			nonce ++;
 			hash = calculateHash();
 		}
-		System.out.println("Block hash: " + hash + "\nPrevios Hash:" + previousHash);
+//		System.out.println("Block hash: " + hash + "\nPrevios Hash:" + previousHash);
 	}
 	
 	/**

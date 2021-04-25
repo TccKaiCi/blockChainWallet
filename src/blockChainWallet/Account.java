@@ -1,6 +1,5 @@
 package blockChainWallet;
 
-import java.util.*;
 import java.io.*;
 
 public class Account {
@@ -64,9 +63,9 @@ public class Account {
             out.write(this.getUserName() + "|");
             out.write(this.getPassWord()+ "|");
             out.write( 
-            		StringUtil.getStringFromKey( this.getWallet().getPublicKey() )+ "|");
+            		this.getWallet().getPublicKey() + "|");
             out.write(
-            		StringUtil.getStringFromKey( this.getWallet().getPrivateKey() ) + "|");
+            		this.getWallet().getPrivateKey() + "|");
             out.newLine();
         } catch (Exception e) {
             System.out.println("Error in writing ");

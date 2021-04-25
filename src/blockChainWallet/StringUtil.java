@@ -22,7 +22,7 @@ public class StringUtil {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			
-			// �?p dụng sha256 cho đầu vào của chúng tôi,
+			// Ap dụng sha256 cho đầu vào của chúng tôi,
 			byte[] hash = digest.digest(input.getBytes("UTF-8"));
 			StringBuffer hexString = new StringBuffer(); 
 			
@@ -81,8 +81,9 @@ public class StringUtil {
 		return Base64.getEncoder().encodeToString(key.getEncoded());
 	}
 	
+	
 	/** 
-	 * �?ánh vào mảng các giao dịch và trả ve một gốc merkle.
+	 *  Dánh vào mảng các giao dịch và trả ve một gốc merkle.
 	 */
 	public static String getMerkleRoot(ArrayList<Transaction> transactions) {
 		int count = transactions.size();

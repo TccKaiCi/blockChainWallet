@@ -60,7 +60,7 @@ public class Wallet {
 	public Transaction sendFunds(PublicKey _recipient, float value) {
 		// thu thập số dư và kiểm tra quỹ.
 		if (getBalance() < value) { 
-			System.out.println("#Not Enough funds to send transaction. Transaction Discarded.");
+			System.out.println("Khong du tien de gui");
 			return null;
 		}
 		

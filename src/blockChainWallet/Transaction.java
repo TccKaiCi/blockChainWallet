@@ -6,10 +6,10 @@ import java.util.ArrayList;
 public class Transaction {
 	
 	public String transactionId; // đây cũng là băm của giao dịch.
-	public PublicKey sender; // địa chỉ ngư�?i gửi / khóa công khai.
-	public PublicKey reciepient;// �?ịa chỉ ngư�?i nhận / khóa công khai.
+	public PublicKey sender; // địa chỉ nguoi gửi / khóa công khai.
+	public PublicKey reciepient;// Dịa chỉ nguoi nhận / khóa công khai.
 	public float value;
-	public byte[] signature; // đi�?u này là để ngăn không cho bất kỳ ai khác chi tiêu ti�?n trong ví của người kha�?c
+	public byte[] signature; // đieu này là để ngăn không cho bất kỳ ai khác chi tiêu tien trong ví của người kha�?c
 	
 	public ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
 	public ArrayList<TransactionOutput> outputs = new ArrayList<TransactionOutput>();

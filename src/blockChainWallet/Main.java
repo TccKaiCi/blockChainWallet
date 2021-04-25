@@ -1,13 +1,9 @@
 package blockChainWallet;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.SecureRandom;
+import java.security.PublicKey;
 import java.security.Security;
-import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
@@ -20,101 +16,170 @@ public class Main {
 	public static Wallet walletSys;
 	
 	public static AccountHR accList;
-	public static Account playerA;
+	public static Account userAccount;
 	
 	public static Transaction genesisTransaction;
 	public static Scanner inp = new Scanner(System.in);
+	public static Scanner nextInt = new Scanner(System.in);
+	public static boolean flagSys = true;
 
 	public static void main(String[] args) {	
 		// thêm các blocks vào chuỗi khối ArrayList:
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); 
 		//Setup Bouncey castle as a Security Provider
 		
-		//Create wallets:
-		walletSys = new Wallet();
-		playerA = new Account();
+		walletSys= new Wallet();
+		createData();
 		
+		menu();
+		System.out.printf("Dang nhap vao he thong thanh cong");
 		
-		Human human1 = new Human("Hiam", "18");
-		Human human2 = new Human("Kaido", "17");
-		accList = new AccountHR();
-		
-		// database
-		Account A = new Account("Hiam", "123", new Wallet(), human1);
-		Account B = new Account("Kaido", "321", new Wallet(), human2);
-		
-		accList.add(A);
-		accList.add(B);
-		
-		
-		// dang nhap
-		Account acc = new Account();
-		acc.setUserName("Hiam");
-		String pass;
-		
-		do {
-			System.out.printf("Nhap vao mat khau: ");
-			pass = inp.nextLine();
-			acc.setPassWord(pass);
-		} while (accList.signIn(acc) == false);
-			
-		playerA = accList.getAccount(acc);
-		
-		getInfor();
-
 		// tao he thong tien phai dung truoc tao block dau tien
 		tienHeThong(walletSys);
 		
 		// tao block dau tien
-		System.out.println("Tạo block cơ sở ");
 		Block genesis = new Block("0");
 		genesis.addTransaction(genesisTransaction);
 		addBlock(genesis);
 		
 
-		System.out.print("Tien ban đầu: ");
-		getInforMoney();
-		
-		//nap tien
 		do {
-			isChainValid();
-			System.out.printf("Nap tien?");
-			pass = inp.nextLine();
-			if (pass.equalsIgnoreCase("Co"))
-				napTien(blockchain.get(blockchain.size() - 1), playerA.getWallet());
-			else 
-				break;
-		} while (true);		
+			menuUser();
+			if ( !isChainValid() ) {
+				System.out.printf("The System is shutting down");
+				flagSys = false;
+			}
+			System.out.println();
+		} while (flagSys);
 		
-		//testing
-		System.out.println("\nA gửi B: 40 đồng");
-		Block block = new Block(blockchain.get(blockchain.size() - 1).hash);
-		
-		Account playerB = accList.getAccount(StringUtil.getStringFromKey(B.getWallet().getPublicKey()));
-		block.addTransaction(playerA.getWallet().sendFunds(playerB.getWallet().publicKey , 40));
-		addBlock(block);
-		
-		System.out.println("\nA gửi B: 40 đồng");
-		block = new Block(blockchain.get(blockchain.size() - 1).hash);
-		block.addTransaction(playerA.getWallet().sendFunds(playerB.getWallet().publicKey , 40));
-		addBlock(block);
-		
-		getInforMoney();
-		isChainValid();
 	}
 	
-	public static void getInforChain() {
-		for (Block block : blockchain) {
-			System.out.println("\n1 Block");
-			System.out.println(block.hash);
-			System.out.println(block.previousHash);
-			System.out.println(block.merkleRoot);
-			System.out.println(block.timeStamp);
-			System.out.println(block.nonce);
-			for (Transaction a : block.transactions) {
-				System.out.println(a);
+	public static void menuUser() {
+		boolean flag = true;
+		String temp = null;
+		do {
+			System.out.println("Vui long chon:");
+			System.out.println("1. Nap them 100 dong");
+			System.out.println("2. Xem toan bo tien");
+			System.out.println("3. Tim publickey");
+			System.out.println("4. Gui tien");
+			System.out.println("5. Thoat");
+			
+			
+			int x = nextInt.nextInt();
+			switch (x) {
+				case 1: 
+					// nap tien
+					napTien(userAccount);
+					flag = !flag;
+					break;
+				case 2:
+					// xem toan bo tien
+					getInforMoney();
+					flag = !flag;
+					break;
+				case 3:
+					// tim publickey
+					System.out.println("Vui long nhap userName: ");
+					String userName =inp.nextLine();
+					temp = StringUtil.getStringFromKey( accList.getPublicKey(userName) );
+					System.out.println( 
+							StringUtil.applySha256(temp)
+							);
+					flag = !flag;
+					break;
+				case 4:
+					// Gui tien
+					System.out.println("PublicKey nguoi nhan: ");
+					temp = inp.nextLine();
+					if ( accList.getAccountByPublicKey(temp) == null ) {
+						System.out.println("Khong tim thay PublicKey nguoi nhan");
+					}
+					else {
+						System.out.println("Nhap so tien muon gui: ");
+						int amount = nextInt.nextInt();
+						Account acc = accList.getAccountByPublicKey(temp);
+						guiTien(acc.getWallet().getPublicKey(), userAccount, amount);
+					}
+					flag = !flag;
+					break;
+				case 5:
+					// thoat
+					flagSys = !flag;
+					flag = !flag;
+					break;
 			}
-		}
+		} while (flag);
+	}
+	
+	public static void menu() {
+		boolean flag = true;
+		do {
+			System.out.println("Vui long chon:");
+			System.out.println("1. Dang Nhap");
+			System.out.println("2. Tao tai khoan");
+			
+			int x = nextInt.nextInt();
+			switch (x) {
+				case 1: 
+					logIn();
+					flag = !flag;
+					break;
+				case 2:
+					resigter();
+					flag = !flag;
+					break;
+			}
+		} while (flag);
+	}
+	
+	public static void logIn() {
+		// dang nhap
+		Account acc = new Account();
+		String name, pass;
+		
+		do {
+			System.out.printf("Ten dang nhap: ");
+			name = inp.nextLine();
+			acc.setUserName(name);
+			System.out.printf("Nhap vao mat khau: ");
+			pass = inp.nextLine();
+			acc.setPassWord(pass);
+		} while (accList.signIn(acc) == false);
+		
+		userAccount = accList.getAccount(acc);
+	}
+	
+	public static void resigter() {
+		System.out.println("Ho va Ten: ");
+		String user = inp.nextLine();
+		System.out.println("Tuoi: ");
+		String age = inp.nextLine();
+		Human human1 = new Human(user, age);
+		
+
+		System.out.println("Ten dang nhap:");
+		user = inp.nextLine();
+		System.out.println("Mat khau");
+		String pass = inp.nextLine();
+		Account A = new Account(user, pass, new Wallet(), human1);
+
+		accList.add(A);
+	}
+	
+	public static void createData() {
+		Human human1 = new Human("Nguyen Tuan Anh", "18");
+		Human human2 = new Human("Tang Chi Chung", "18");
+		Human human3 = new Human("Nguyen Van Thanh", "18");
+		
+		Account A = new Account("NTA", "123", new Wallet(), human1);
+		Account B = new Account("TCC", "321", new Wallet(), human2);
+		Account C = new Account("NVT", "123", new Wallet(), human3);
+
+		accList = new AccountHR();
+		accList.add(A);
+		accList.add(B);
+		accList.add(C);
 	}
 	
 	public static void addBlock(Block newBlock) {
@@ -123,38 +188,34 @@ public class Main {
 	}
 	
 	public static void getInforMoney() {
-		System.out.println("\nVí ti�?n của He thong: " + walletSys.getBalance());
+		System.out.println("\nVí tien của He thong: " + walletSys.getBalance());
 		accList.getInforAll();
 	}
 	
-	public static void getInfor() {
-		for (Account a : accList.getListAcc()) {
-			String temp = StringUtil.getStringFromKey( a.getWallet().getPrivateKey());
-			
-			System.out.println("\nWallet"+a.getUserName()+
-					":\nPB:" + StringUtil.getStringFromKey( a.getWallet().getPublicKey() ) 
-			+ "\nPR:" + StringUtil.applySha256(temp) );
-			
-		}
+	public static void napTien(Account acc) {
+		isChainValid();
+		napTien(blockchain.get(blockchain.size() - 1), acc);
 	}
 	
-	public static void napTien(Block pre, Wallet wallet) {
-		System.out.println("\nA nap them 100 dong vao tai khoan");
-		Block block = new Block(pre.hash);
-		block.addTransaction(walletSys.sendFunds(wallet.publicKey, 100));
+	public static void guiTien(PublicKey key, Account acc, int amount) {
+		Block block = new Block(blockchain.get(blockchain.size() - 1).hash);
+		
+		block.addTransaction(userAccount.getWallet().sendFunds(key , (float) amount));
 		addBlock(block);
-		
-		
-		System.out.print("\nSau khi nạp tien: ");
-		getInforMoney();      
 	}
 	
-	public static void tienHeThong(Wallet wallet) {
-		System.out.println("Tao tien he thong");
-		
+	public static void napTien(Block pre, Account acc) {
+		System.out.println("\n"+ acc.getUserName() +" nap them 100 dong vao tai khoan");
+		Block block = new Block(pre.hash);
+		block.addTransaction(walletSys.sendFunds(acc.getWallet().publicKey, 100));
+		addBlock(block);
+	}
+	
+	// tao tien he thong
+	public static void tienHeThong(Wallet wallet) {		
 		Wallet coinbase = new Wallet();
 		
-		// tạo giao dịch gô�?c, gửi thêm 100 giả đến walletA:
+		// tạo giao dịch goc gửi thêm 100 giả đến walletA:
 		genesisTransaction = new Transaction(coinbase.publicKey, wallet.publicKey, 999999999, null);
 		
 		// ký thủ công giao dịch genesis
@@ -170,11 +231,6 @@ public class Main {
 		// đi�?u quan tr�?ng là phải lưu trữ giao dịch đầu tiên của chúng trong danh sách UTXOs.
 		UTXOs.put(genesisTransaction.outputs.get(0).id, genesisTransaction.outputs.get(0)); 
 	}
-	
-	
-	
-	
-	
 	
 	public static Boolean isChainValid() {
 		Block currentBlock; 
