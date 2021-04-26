@@ -4,7 +4,6 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -12,7 +11,7 @@ public class Main {
 	public static ArrayList<Block> blockchain = new ArrayList<Block>();
 	public static HashMap<String,TransactionOutput> UTXOs = new HashMap<>();
 	
-	public static int difficulty = 2;
+	public static int difficulty = 3;
 
 	public static Wallet walletSys;
 	
@@ -31,28 +30,28 @@ public class Main {
 		
 		walletSys= new Wallet();
 		createData();
-		
-		menu();
-		System.out.printf("Dang nhap vao he thong thanh cong");
-		
-		// tao he thong tien phai dung truoc tao block dau tien
-		tienHeThong(walletSys);
-		
 		// tao block dau tien
 		Block genesis = new Block("0");
 		genesis.addTransaction(genesisTransaction);
 		addBlock(genesis);
 		
-
+		// tao he thong tien phai dung truoc tao block dau tien
+		tienHeThong(walletSys);
+					
 		do {
-			menuUser();
-			if ( !isChainValid() ) {
-				System.out.printf("The System is shutting down");
-				flagSys = false;
-			}
-			System.out.println();
-		} while (flagSys);
+			menu();
+			
+			do {
+				menuUser();
+				if ( !isChainValid() ) {
+					System.out.printf("The System is shutting down");
+					flagSys = false;
+				}
+				System.out.println();
+			} while (flagSys);
 		
+			flagSys = true;
+		}while (true);
 	}
 	
 	public static void menuUser() {
@@ -60,16 +59,21 @@ public class Main {
 		String temp = null;
 		do {
 			System.out.println("Vui long chon:");
+			System.out.println("0. Thoat");
 			System.out.println("1. Nap them 100 dong");
 			System.out.println("2. Xem toan bo tien");
 			System.out.println("3. Tim publickey");
 			System.out.println("4. Gui tien");
 			System.out.println("5. Lich su giao dich");
-			System.out.println("6. Thoat");
-			
+			System.out.println("6. Lich su giao dich cua 1 user");
 			
 			int x = nextInt.nextInt();
 			switch (x) {
+				case 0:
+					// thoat
+					flagSys = !flag;
+					flag = !flag;
+					break;
 				case 1: 
 					// nap tien
 					napTien(userAccount);
@@ -111,8 +115,10 @@ public class Main {
 					flag = !flag;
 					break;
 				case 6:
-					// thoat
-					flagSys = !flag;
+					// lich su giao dich cua 1 user
+					System.out.println("Nhap ten nguoi muon xem:");
+					temp = inp.nextLine();
+					lichSuGiaoDich(temp);
 					flag = !flag;
 					break;
 			}
@@ -159,8 +165,8 @@ public class Main {
 	
 	public static void lichSuGiaoDich() {
 		for (Block block : blockchain) {
-			
-			System.out.println(block.hash+ "\n" + block.previousHash);
+			System.out.println("Hash: " + block.hash+ "\nPreHash: " + block.previousHash);
+			System.out.println("Time: " + block.timeStamp);
 			for (Transaction trans : block.transactions) {
 				String sender = StringUtil.getStringFromKey(trans.reciepient);
 				sender = StringUtil.applySha256(sender);
@@ -183,9 +189,38 @@ public class Main {
 				System.out.println(
 						"Nguoi Gui: " + nguoiGui
 						+ "\nNguoi Nhan: " + nguoiNhan
-						+ "\nGia tri: " + trans.value);
+						+ "\nGia tri: " + trans.value + "\n");
 			}
-			System.out.println("end 1 block");
+		}
+	}
+	
+	public static void lichSuGiaoDich(String name) {
+		for (Block block : blockchain) {
+//			System.out.println("Hash: " + block.hash+ "\nPreHash" + block.previousHash);
+			for (Transaction trans : block.transactions) {
+				String sender = StringUtil.getStringFromKey(trans.reciepient);
+				sender = StringUtil.applySha256(sender);
+				
+				String sender1 = StringUtil.getStringFromKey(trans.sender);
+				sender1 = StringUtil.applySha256(sender1);
+				
+				String nguoiGui = "He Thong";
+				if (accList.getAccountByPublicKey(sender1) != null) 
+					nguoiGui = accList.getAccountByPublicKey(sender1).getUserName();
+				
+				String nguoiNhan = "He Thong";
+				if (accList.getAccountByPublicKey(sender) != null)
+					nguoiNhan = accList.getAccountByPublicKey(sender).getUserName();
+				
+				if ( nguoiNhan.equalsIgnoreCase(name) || nguoiGui.equalsIgnoreCase(name) ) {
+					
+				System.out.println(
+						"Nguoi Gui: " + nguoiGui
+						+ "\nNguoi Nhan: " + nguoiNhan
+						+ "\nGia tri: " + trans.value + "\n");
+				}
+			}
+//			System.out.println("end 1 block");
 		}
 	}
 	
@@ -212,7 +247,7 @@ public class Main {
 		Human human3 = new Human("Nguyen Van Thanh", "18");
 		
 		Account A = new Account("NTA", "123", new Wallet(), human1);
-		Account B = new Account("TCC", "321", new Wallet(), human2);
+		Account B = new Account("TCC", "123", new Wallet(), human2);
 		Account C = new Account("NVT", "123", new Wallet(), human3);
 
 		accList = new AccountHR();

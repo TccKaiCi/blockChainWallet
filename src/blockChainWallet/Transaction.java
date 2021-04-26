@@ -30,8 +30,10 @@ public class Transaction {
 				+ StringUtil.getStringFromKey(reciepient)
 		+ Float.toString(value) + sequence);
 	}
-	
-	// Trả ve true nếu có thể tạo giao dịch mới.
+
+	/*
+	 * Trả ve true nếu có thể tạo giao dịch mới.
+	 */
 	public boolean processTransaction() {
 		
 		if (verifiySignature() == false) {

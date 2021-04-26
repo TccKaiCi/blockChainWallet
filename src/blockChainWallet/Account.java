@@ -1,7 +1,5 @@
 package blockChainWallet;
 
-import java.io.*;
-
 public class Account {
 	
 	private String userName;
@@ -54,33 +52,4 @@ public class Account {
 		}
 		return false;
 	}
-	
-	
-	
-	
-	public void writeFile(BufferedWriter out) throws IOException{
-        try {
-            out.write(this.getUserName() + "|");
-            out.write(this.getPassWord()+ "|");
-            out.write( 
-            		this.getWallet().getPublicKey() + "|");
-            out.write(
-            		this.getWallet().getPrivateKey() + "|");
-            out.newLine();
-        } catch (Exception e) {
-            System.out.println("Error in writing ");
-        }
-    }
-    
-    public boolean readFile(String s){ 
-        if (s!=null){
-//            String[] inp = s.split("\\|");
-//            this.setId(inp[0]);
-//            this.setPosition(inp[1]);
-//            this.setUser(inp[2]);
-//            this.setPassword(inp[3]);
-            return true;
-        }
-        return false;
-    }
 }
