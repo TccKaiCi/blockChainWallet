@@ -4,6 +4,7 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -63,7 +64,8 @@ public class Main {
 			System.out.println("2. Xem toan bo tien");
 			System.out.println("3. Tim publickey");
 			System.out.println("4. Gui tien");
-			System.out.println("5. Thoat");
+			System.out.println("5. Lich su giao dich");
+			System.out.println("6. Thoat");
 			
 			
 			int x = nextInt.nextInt();
@@ -104,6 +106,11 @@ public class Main {
 					flag = !flag;
 					break;
 				case 5:
+					// lich su
+					lichSuGiaoDich();
+					flag = !flag;
+					break;
+				case 6:
 					// thoat
 					flagSys = !flag;
 					flag = !flag;
@@ -148,6 +155,38 @@ public class Main {
 		} while (accList.signIn(acc) == false);
 		
 		userAccount = accList.getAccount(acc);
+	}
+	
+	public static void lichSuGiaoDich() {
+		for (Block block : blockchain) {
+			
+			System.out.println(block.hash+ "\n" + block.previousHash);
+			for (Transaction trans : block.transactions) {
+				String sender = StringUtil.getStringFromKey(trans.reciepient);
+				sender = StringUtil.applySha256(sender);
+				
+				String sender1 = StringUtil.getStringFromKey(trans.sender);
+				sender1 = StringUtil.applySha256(sender1);
+				
+				String nguoiGui;
+				if (accList.getAccountByPublicKey(sender1) == null) 
+					nguoiGui = "HeThong";
+				else
+				nguoiGui = accList.getAccountByPublicKey(sender1).getUserName();
+				
+				String nguoiNhan;
+				if (accList.getAccountByPublicKey(sender) == null)
+					nguoiNhan = "HeThong";
+				else
+				nguoiNhan = accList.getAccountByPublicKey(sender).getUserName();
+				
+				System.out.println(
+						"Nguoi Gui: " + nguoiGui
+						+ "\nNguoi Nhan: " + nguoiNhan
+						+ "\nGia tri: " + trans.value);
+			}
+			System.out.println("end 1 block");
+		}
 	}
 	
 	public static void resigter() {
