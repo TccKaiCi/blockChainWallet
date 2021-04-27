@@ -1,15 +1,10 @@
 package blockChainWallet;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.*;
+import java.security.spec.*;
+import java.util.Base64;
+import java.io.*;
+import java.util.*;
 
 public class Account {
 	
@@ -67,11 +62,13 @@ public class Account {
 	public void writeFile(BufferedWriter out) throws IOException{
         try {
         	out.write(this.getUserName() + "|");
-        	out.write(this.getWallet().getPrivateKey().getEncoded() + "|");
-//            out.write(this.getId() + "|");
-//            out.write(this.getPosition()+ "|");
-//            out.write(this.getUser() + "|");
-//            out.write(this.getPassword() + "|");
+        	
+        	//converting byte to String 
+        	String str_key = Base64.getEncoder().encodeToString(this.getWallet().getPublicKey().getEncoded());
+        	out.write(str_key + "|");
+        	
+    		String skey = Base64.getEncoder().encodeToString(this.getWallet().getPrivateKey().getEncoded());
+        	out.write(skey + "|");
             out.newLine();
         } catch (Exception e) {
             System.out.println("Error in writing ");
@@ -82,29 +79,40 @@ public class Account {
         if (s!=null){
             String[] inp = s.split("\\|");
             this.setUserName(inp[0]);
-            System.out.println(inp[1]);
             
+            KeyFactory keyFactory = null;
+            try {
+            	keyFactory = KeyFactory.getInstance("ECDSA", "BC");
+            } catch (NoSuchAlgorithmException | NoSuchProviderException e1) {
+            	e1.printStackTrace();
+            }
+
+            byte[] KeyBytes  = Base64.getDecoder().decode(inp[1]);
             
-//            KeyFactory keyFactory = null;
-//            byte[] publicKeyBytes = ;
-//    		try {
-//    			keyFactory = KeyFactory.getInstance("ECDSA", "BC");
-//    		} catch (NoSuchAlgorithmException e) {
-//    			e.printStackTrace();
-//    		} catch (NoSuchProviderException e) {
-//    			e.printStackTrace();
-//    		}
-//    		
-//    	    EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
-//    	    PrivateKey publicKey2 =null;
-//    	    try {
-//    			publicKey2 = keyFactory.generatePrivate(publicKeySpec);
-//    		} catch (InvalidKeySpecException e) {
-//    			e.printStackTrace();
-//    		}
-//    	    
-//    	    System.out.println(publicKey2);
-    	    
+            // get public key
+            EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(KeyBytes);
+            PublicKey publicKey2 =null ;
+            try {
+            	publicKey2 = keyFactory.generatePublic(publicKeySpec);
+            } catch (InvalidKeySpecException e) {
+            	e.printStackTrace();
+            }
+            
+    		System.out.println( publicKey2 );
+    		
+    		// get Private key
+    		KeyBytes  = Base64.getDecoder().decode(inp[2]);
+    		
+    		EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(KeyBytes);
+            PrivateKey privateKey =null ;
+            try {
+            	privateKey = keyFactory.generatePrivate(privateKeySpec);
+            } catch (InvalidKeySpecException e) {
+            	e.printStackTrace();
+            }
+            
+    		System.out.println( privateKey );
+    		
             return true;
         }
         return false;

@@ -81,7 +81,6 @@ public class StringUtil {
 		return Base64.getEncoder().encodeToString(key.getEncoded());
 	}
 	
-	
 	/** 
 	 *  Dánh vào mảng các giao dịch và trả ve một gốc merkle.
 	 */
