@@ -93,4 +93,11 @@ public class Wallet {
 		return this.privateKey;
 	}
 	
+	public void setPublicKey(PublicKey key) {
+		this.publicKey = key;
+	}
+	
+	public void setPrivateKey(PrivateKey key) {
+		this.privateKey = key;
+	}
 }
