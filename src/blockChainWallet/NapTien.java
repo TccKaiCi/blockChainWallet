@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -36,6 +38,7 @@ public class NapTien extends JFrame {
 	 * Create the frame.
 	 */
 	public NapTien() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -111,5 +114,6 @@ public class NapTien extends JFrame {
 	
 	public void napTien(String menhGia) {
 		Main.napTien(Main.userAccount, Float.valueOf(menhGia) );
+		JOptionPane.showConfirmDialog(this, "Nạp tiền thành công", "NULL", JOptionPane.OK_OPTION);
 	}
 }

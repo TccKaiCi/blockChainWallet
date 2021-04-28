@@ -13,8 +13,9 @@ public class Account {
 	private Wallet wallet;
 	private Human human;
 	
+	private String idHuman;
+	
 	public Account() {
-		
 	}
 	
 	public Account(String userName, String passWord, Wallet wallet, Human human) {
@@ -22,6 +23,14 @@ public class Account {
 		this.passWord = passWord;
 		this.wallet = wallet;
 		this.human = human;
+	}
+	
+	public void setIdHuman(String id) {
+		this.idHuman = id;
+	}
+	
+	public String getIdHuman( ) {
+		return this.idHuman;
 	}
 	
 	public String getUserName() {
@@ -62,6 +71,8 @@ public class Account {
 	public void writeFile(BufferedWriter out) throws IOException{
         try {
         	out.write(this.getUserName() + "|");
+        	out.write(this.getPassWord() + "|");
+        	out.write(this.getIdHuman() + "|");
         	
         	//converting byte to String 
         	String str_key = Base64.getEncoder().encodeToString(this.getWallet().getPublicKey().getEncoded());
@@ -79,6 +90,10 @@ public class Account {
         if (s!=null){
             String[] inp = s.split("\\|");
             this.setUserName(inp[0]);
+            this.setPassWord(inp[1]);
+            this.setIdHuman(inp[2]);
+            this.wallet = new Wallet();
+            this.human = new Human("AAA", "31");
             
             KeyFactory keyFactory = null;
             try {
@@ -87,7 +102,7 @@ public class Account {
             	e1.printStackTrace();
             }
 
-            byte[] KeyBytes  = Base64.getDecoder().decode(inp[1]);
+            byte[] KeyBytes  = Base64.getDecoder().decode(inp[3]);
             
             // get public key
             EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(KeyBytes);
@@ -98,10 +113,10 @@ public class Account {
             	e.printStackTrace();
             }
             
-    		System.out.println( publicKey2 );
+    		this.wallet.setPublicKey(publicKey2);
     		
     		// get Private key
-    		KeyBytes  = Base64.getDecoder().decode(inp[2]);
+    		KeyBytes  = Base64.getDecoder().decode(inp[4]);
     		
     		EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(KeyBytes);
             PrivateKey privateKey =null ;
@@ -111,8 +126,8 @@ public class Account {
             	e.printStackTrace();
             }
             
-    		System.out.println( privateKey );
-    		
+            this.wallet.setPrivateKey(privateKey);
+
             return true;
         }
         return false;

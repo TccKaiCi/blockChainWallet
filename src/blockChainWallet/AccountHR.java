@@ -18,6 +18,7 @@ public class AccountHR {
 	}
     
     public void add(Account acc){
+    	acc.setIdHuman(acc.getUserName() + accList.size());
     	accList.add(acc);
     }
     
@@ -31,7 +32,15 @@ public class AccountHR {
     }
     
     public List<Account> getListAcc() {
-    	return accList;
+    	return this.accList;
+    }
+    
+    public void display() {
+    	for (Account a : accList) {
+    		System.out.println(a.getUserName());
+    		System.out.println(a.getIdHuman());
+    		System.out.println(a.getWallet().getPublicKey());
+    	}
     }
     
     public Account getAccount(Account acc) {
@@ -93,9 +102,10 @@ public class AccountHR {
             String s = null;
             do {
                 s = nhap.readLine();
-                Account u = new Account();
-                if ( u.readFile(s) && s.contains("null"))
-                    accList.add(u);
+                Human human1 = new Human("Nguyen Tuan Anh", "18");
+                Account u = new Account("NTA", "123", new Wallet(), human1);
+                if ( u.readFile(s) )
+                    add(u);
             } while ( s!=null);
             
             nhap.close();

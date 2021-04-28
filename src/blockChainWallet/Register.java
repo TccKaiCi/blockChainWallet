@@ -10,16 +10,18 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Register extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField userName;
-	private JTextField passWord;
-	private JTextField hoVaTen;
-	private JTextField Tuoi;
+	private JTextField tfuserName;
+	private JTextField tfpassWord;
+	private JTextField tfhoVaTen;
+	private JTextField tfTuoi;
 
 	/**
 	 * Launch the application.
@@ -41,6 +43,7 @@ public class Register extends JFrame {
 	 * Create the frame.
 	 */
 	public Register() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 690, 340);
 		contentPane = new JPanel();
@@ -48,17 +51,17 @@ public class Register extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		userName = new JTextField();
-		userName.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		userName.setColumns(10);
-		userName.setBounds(10, 46, 300, 50);
-		contentPane.add(userName);
+		tfuserName = new JTextField();
+		tfuserName.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		tfuserName.setColumns(10);
+		tfuserName.setBounds(10, 46, 300, 50);
+		contentPane.add(tfuserName);
 		
-		passWord = new JTextField();
-		passWord.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		passWord.setColumns(10);
-		passWord.setBounds(374, 46, 300, 50);
-		contentPane.add(passWord);
+		tfpassWord = new JTextField();
+		tfpassWord.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		tfpassWord.setColumns(10);
+		tfpassWord.setBounds(374, 46, 300, 50);
+		contentPane.add(tfpassWord);
 		
 		JButton btnngK = new JButton("Đăng Ký");
 		btnngK.addActionListener(new ActionListener() {
@@ -90,20 +93,34 @@ public class Register extends JFrame {
 		lblTui.setBounds(374, 122, 300, 31);
 		contentPane.add(lblTui);
 		
-		hoVaTen = new JTextField();
-		hoVaTen.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		hoVaTen.setColumns(10);
-		hoVaTen.setBounds(10, 164, 300, 50);
-		contentPane.add(hoVaTen);
+		tfhoVaTen = new JTextField();
+		tfhoVaTen.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		tfhoVaTen.setColumns(10);
+		tfhoVaTen.setBounds(10, 164, 300, 50);
+		contentPane.add(tfhoVaTen);
 		
-		Tuoi = new JTextField();
-		Tuoi.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		Tuoi.setColumns(10);
-		Tuoi.setBounds(374, 164, 300, 50);
-		contentPane.add(Tuoi);
+		tfTuoi = new JTextField();
+		tfTuoi.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		tfTuoi.setColumns(10);
+		tfTuoi.setBounds(374, 164, 300, 50);
+		contentPane.add(tfTuoi);
 	}
 	
 	public void dangKy() {
+		String userName = tfuserName.getText();
+		String pass = tfpassWord.getText();
+		String hvTen = tfhoVaTen.getText();
+		String tuoi = tfTuoi.getText();
 		
+		Human human1 = new Human(hvTen, tuoi);
+		Account A = new Account(userName, pass, new Wallet(), human1);
+
+		Main.accList.add(A);
+		int n = JOptionPane.showConfirmDialog(this, "Đăng ký thành công", "NULL", JOptionPane.OK_OPTION);
+		if (n < 1000) {
+			this.setVisible(false);
+			Login login = new Login();
+			login.setVisible(true);
+		}
 	}
 }
