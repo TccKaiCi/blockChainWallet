@@ -1,7 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/blockChainWallet/AccountHR.java=UTF-8
 encoding//src/blockChainWallet/Block.java=UTF-8
+encoding//src/blockChainWallet/Login.java=UTF-8
 encoding//src/blockChainWallet/Main.java=UTF-8
+encoding//src/blockChainWallet/Register.java=UTF-8
 encoding//src/blockChainWallet/StringUtil.java=UTF-8
 encoding//src/blockChainWallet/Transaction.java=UTF-8
 encoding//src/blockChainWallet/TransactionInput.java=UTF-8

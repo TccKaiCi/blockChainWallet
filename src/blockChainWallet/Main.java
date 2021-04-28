@@ -37,21 +37,25 @@ public class Main {
 		
 		// tao he thong tien phai dung truoc tao block dau tien
 		tienHeThong(walletSys);
-					
-		do {
-			menu();
-			
-			do {
-				menuUser();
-				if ( !isChainValid() ) {
-					System.out.printf("The System is shutting down");
-					flagSys = false;
-				}
-				System.out.println();
-			} while (flagSys);
 		
-			flagSys = true;
-		}while (true);
+		Login login = new Login();
+//		login.main(args);
+		login.setVisible(true);
+		
+//		do {
+//			menu();
+//			
+//			do {
+//				menuUser();
+//				if ( !isChainValid() ) {
+//					System.out.printf("The System is shutting down");
+//					flagSys = false;
+//				}
+//				System.out.println();
+//			} while (flagSys);
+//		
+//			flagSys = true;
+//		}while (true);
 	}
 	
 	public static void menuUser() {
@@ -76,7 +80,7 @@ public class Main {
 					break;
 				case 1: 
 					// nap tien
-					napTien(userAccount);
+					napTien(userAccount, 100);
 					flag = !flag;
 					break;
 				case 2:
@@ -266,9 +270,9 @@ public class Main {
 		accList.getInforAll();
 	}
 	
-	public static void napTien(Account acc) {
+	public static void napTien(Account acc,float amount) {
 		isChainValid();
-		napTien(blockchain.get(blockchain.size() - 1), acc);
+		napTien(blockchain.get(blockchain.size() - 1), acc, amount);
 	}
 	
 	public static void guiTien(PublicKey key, Account acc, int amount) {
@@ -278,10 +282,10 @@ public class Main {
 		addBlock(block);
 	}
 	
-	public static void napTien(Block pre, Account acc) {
-		System.out.println("\n"+ acc.getUserName() +" nap them 100 dong vao tai khoan");
+	public static void napTien(Block pre, Account acc, float amount) {
+		System.out.println("\n"+ acc.getUserName() +" nap them "+ amount +" dong vao tai khoan");
 		Block block = new Block(pre.hash);
-		block.addTransaction(walletSys.sendFunds(acc.getWallet().publicKey, 100));
+		block.addTransaction(walletSys.sendFunds(acc.getWallet().publicKey, amount));
 		addBlock(block);
 	}
 	
