@@ -1,7 +1,10 @@
 package blockChainWallet;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.security.*;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class Transaction {
 	
@@ -9,7 +12,9 @@ public class Transaction {
 	public PublicKey sender; // địa chỉ nguoi gửi / khóa công khai.
 	public PublicKey reciepient;// Dịa chỉ nguoi nhận / khóa công khai.
 	public float value;
-	public byte[] signature; // đieu này là để ngăn không cho bất kỳ ai khác chi tiêu tien trong ví của người kha�?c
+	
+	// đieu này là để ngăn không cho bất kỳ ai khác chi tiêu tien trong ví của người khac
+	public byte[] signature; 
 	
 	public ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
 	public ArrayList<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
@@ -106,4 +111,50 @@ public class Transaction {
 		+ Float.toString(value);
 		return StringUtil.verifyECDSASig(sender, data, signature);
 	}
+	
+	public void display() {
+//		System.out.println(this.transactionId);
+//		System.out.println(this.sender);
+//		System.out.println(this.reciepient);
+//		System.out.println(this.value);
+//		System.out.println(this.signature);
+		
+		for (TransactionInput input : this.inputs) {
+			System.out.println("input: ");
+			input.display();
+		}
+		
+		for (TransactionOutput input : this.outputs) {
+			System.out.println("output: ");
+			input.display();
+		}
+	}
+	
+	public void writeFile(BufferedWriter out) throws IOException{
+        try {
+        	out.write(this.transactionId + "|");
+        	
+        	//converting byte to String 
+        	String str_key = Base64.getEncoder().encodeToString(this.sender.getEncoded());
+        	out.write(str_key + "|");
+        	
+        	//converting byte to String 
+        	str_key = Base64.getEncoder().encodeToString(this.reciepient.getEncoded());
+        	out.write(str_key + "|");
+        	
+        	out.write(this.value + "|");
+        	out.write(
+        			Base64.getEncoder().encodeToString( this.signature ) + "|");
+    		
+    		for (TransactionInput input : this.inputs) {
+    			input.writeFile(out);
+    		}
+    		
+    		for (TransactionOutput input : this.outputs) {
+    			input.writeFile(out);
+    		}	
+        } catch (Exception e) {
+            System.out.println("Error in writing ");
+        }
+    }
 }

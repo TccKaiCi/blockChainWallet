@@ -1,27 +1,29 @@
 package blockChainWallet;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.security.PublicKey;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 	
 	public static ArrayList<Block> blockchain = new ArrayList<Block>();
 	public static HashMap<String,TransactionOutput> UTXOs = new HashMap<>();
-	
-	public static int difficulty = 3;
 
-	public static Wallet walletSys;
-	
 	public static AccountHR accList;
-	public static Account userAccount;
-	
+	public static Wallet walletSys;
 	public static Transaction genesisTransaction;
+
+	public static Account userAccount;
 	public static Scanner inp = new Scanner(System.in);
 	public static Scanner nextInt = new Scanner(System.in);
 	public static boolean flagSys = true;
+	public static int difficulty = 3;
 
 	public static void main(String[] args) {	
 		// thêm các blocks vào chuỗi khối ArrayList:
@@ -30,6 +32,7 @@ public class Main {
 		
 		walletSys= new Wallet();
 		createData();
+		
 		// tao block dau tien
 		Block genesis = new Block("0");
 		genesis.addTransaction(genesisTransaction);
@@ -39,7 +42,6 @@ public class Main {
 		tienHeThong(walletSys);
 		
 		Login login = new Login();
-//		login.main(args);
 		login.setVisible(true);
 		
 //		do {
@@ -55,8 +57,11 @@ public class Main {
 //			} while (flagSys);
 //		
 //			flagSys = true;
+//					
 //		}while (true);
+				
 	}
+	
 	
 	public static void menuUser() {
 		boolean flag = true;
@@ -109,7 +114,7 @@ public class Main {
 						System.out.println("Nhap so tien muon gui: ");
 						int amount = nextInt.nextInt();
 						Account acc = accList.getAccountByPublicKey(temp);
-						guiTien(acc.getWallet().getPublicKey(), userAccount, amount);
+						guiTien(acc.getWallet().getPublicKey(), amount);
 					}
 					flag = !flag;
 					break;
@@ -275,11 +280,15 @@ public class Main {
 		napTien(blockchain.get(blockchain.size() - 1), acc, amount);
 	}
 	
-	public static void guiTien(PublicKey key, Account acc, int amount) {
+	public static void guiTien(PublicKey key, int amount) {
 		Block block = new Block(blockchain.get(blockchain.size() - 1).hash);
 		
-		block.addTransaction(userAccount.getWallet().sendFunds(key , (float) amount));
-		addBlock(block);
+		Boolean flag = block.addTransaction(userAccount.getWallet().sendFunds(key , (float) amount));
+		
+		if ( flag ) 
+			addBlock(block);
+		else
+			System.out.println("Gui tien that bai");
 	}
 	
 	public static void napTien(Block pre, Account acc, float amount) {
@@ -293,7 +302,7 @@ public class Main {
 	public static void tienHeThong(Wallet wallet) {		
 		Wallet coinbase = new Wallet();
 		
-		// tạo giao dịch goc gửi thêm 100 giả đến walletA:
+		// tạo giao dịch goc gửi thêm tien giả đến wallet:
 		genesisTransaction = new Transaction(coinbase.publicKey, wallet.publicKey, 999999999, null);
 		
 		// ký thủ công giao dịch genesis
@@ -306,7 +315,7 @@ public class Main {
 		genesisTransaction.outputs.add(new TransactionOutput(genesisTransaction.reciepient
 				, genesisTransaction.value, genesisTransaction.transactionId)); 
 		
-		// đi�?u quan tr�?ng là phải lưu trữ giao dịch đầu tiên của chúng trong danh sách UTXOs.
+		// đieu quan trong là phải lưu trữ giao dịch đầu tiên của chúng trong danh sách UTXOs.
 		UTXOs.put(genesisTransaction.outputs.get(0).id, genesisTransaction.outputs.get(0)); 
 	}
 	
@@ -391,4 +400,62 @@ public class Main {
 		return true;
 	}
 	
+	public static void writeFile() {
+		try {
+			writeFileBlockChain();
+			writeFileUTXO();
+			accList.writeFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeFileBlockChain() throws IOException{
+		BufferedWriter xuat = new BufferedWriter(new FileWriter("blockChain.txt"));
+		
+		for (Block block : blockchain) {
+			block.writeFile(xuat);
+			xuat.newLine();
+		}
+		
+        xuat.close();
+	}
+	
+	public static void writeFileUTXO() throws IOException {
+		BufferedWriter xuat = new BufferedWriter(new FileWriter("UTXOs.txt"));
+		
+        for (Map.Entry<String, TransactionOutput> entry : UTXOs.entrySet()) {
+        	xuat.write(entry.getKey() + "|" + entry.getValue());
+			xuat.newLine();
+        }
+        
+        xuat.close();
+	}
+	
+	public static void writeFilegenesisTransaction() throws IOException {
+		BufferedWriter xuat = new BufferedWriter(new FileWriter("genesisTransaction.txt"));
+		
+        for (Map.Entry<String, TransactionOutput> entry : UTXOs.entrySet()) {
+        	xuat.write(entry.getKey() + "|" + entry.getValue());
+			xuat.newLine();
+        }
+        
+        xuat.close();
+	}
+	
+	public static void getInforChain() {
+		System.out.println("\nGet blockchain infor");
+		for (Block block : blockchain) {
+			System.out.println("\n1 Block");
+//			System.out.println("hash: " + block.hash);
+//			System.out.println("previousHash: " + block.previousHash);
+//			System.out.println("merkleRoot: " + block.merkleRoot);
+//			System.out.println("timeStamp: " + block.timeStamp);
+//			System.out.println("nonce: " + block.nonce);
+			for (Transaction a : block.transactions) {
+				System.out.println("1 transactions: ");
+				a.display();
+			}
+		}
+	}
 }

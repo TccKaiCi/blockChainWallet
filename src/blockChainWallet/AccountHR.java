@@ -11,6 +11,7 @@ import java.security.PublicKey;
 public class AccountHR {
 	private List<Account> accList;
     Scanner gets = new Scanner(System.in);
+    
     private String File_Users  ="acc.txt";
 	
 	public AccountHR() {
@@ -18,7 +19,6 @@ public class AccountHR {
 	}
     
     public void add(Account acc){
-    	acc.setIdHuman(acc.getUserName() + accList.size());
     	accList.add(acc);
     }
     
@@ -38,8 +38,11 @@ public class AccountHR {
     public void display() {
     	for (Account a : accList) {
     		System.out.println(a.getUserName());
-    		System.out.println(a.getIdHuman());
+    		System.out.println(a.getPassWord());
+    		System.out.println(a.getHuman().getName());
+    		System.out.println(a.getHuman().getAge());
     		System.out.println(a.getWallet().getPublicKey());
+    		System.out.println(a.getWallet().getPrivateKey());
     	}
     }
     

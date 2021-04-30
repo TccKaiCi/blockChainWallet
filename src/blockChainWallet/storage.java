@@ -35,23 +35,6 @@ System.out.println("\nGet UTXOs infor");
 			}
 		}
 	}
-	
-			
-	
-	public static void getInfor() {
-		for (Account a : accList.getListAcc()) {
-			String temp = StringUtil.getStringFromKey( a.getWallet().getPrivateKey());
-			String maHoa = StringUtil.applySha256(temp);
-			
-			System.out.println("\nWallet"+a.getUserName()+
-					":\nPB:" + StringUtil.getStringFromKey( a.getWallet().getPublicKey() ) 
-			+ "\nPR:" + maHoa );
-			
-		}
-	}
-
-
-
 
 
 

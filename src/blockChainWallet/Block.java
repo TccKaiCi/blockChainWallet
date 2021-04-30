@@ -1,7 +1,12 @@
 package blockChainWallet;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 public class Block {
 	
@@ -9,9 +14,9 @@ public class Block {
 	public String previousHash; 
 	
 	public String merkleRoot;
-	public ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	public long timeStamp;
 	public int nonce;
+	public ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	
 	public Block(String previousHash ) {
 		this.previousHash = previousHash;
@@ -61,4 +66,19 @@ public class Block {
 		return true;
 	}
 	
+	public void writeFile(BufferedWriter out) throws IOException{
+        try {
+        	out.write(hash + "|");
+        	out.write(previousHash + "|");
+        	out.write(merkleRoot + "|");
+        	out.write(timeStamp + "|");
+        	out.write(nonce + "|");
+			
+        	for (Transaction a : transactions) {
+				a.writeFile(out);
+			}
+        } catch (Exception e) {
+            System.out.println("Error in writing ");
+        }
+    }
 }

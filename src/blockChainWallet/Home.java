@@ -54,11 +54,21 @@ public class Home extends JFrame {
 		contentPane.add(btnNpTin);
 		
 		JButton btnGiTin = new JButton("G\u1EEDi Ti\u1EC1n");
+		btnGiTin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendMoney();
+			}
+		});
 		btnGiTin.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnGiTin.setBounds(10, 136, 182, 31);
 		contentPane.add(btnGiTin);
 		
 		JButton btnLchSGiao = new JButton("L\u1ECBch S\u1EED Giao d\u1ECBch");
+		btnLchSGiao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				transHis();
+			}
+		});
 		btnLchSGiao.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnLchSGiao.setBounds(51, 178, 329, 31);
 		contentPane.add(btnLchSGiao);
@@ -79,6 +89,11 @@ public class Home extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JButton btnXemHS = new JButton("Xem h\u1ED3 s\u01A1");
+		btnXemHS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				hoSo();
+			}
+		});
 		btnXemHS.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnXemHS.setBounds(220, 113, 182, 31);
 		contentPane.add(btnXemHS);
@@ -95,5 +110,23 @@ public class Home extends JFrame {
 		this.setVisible(false);
 		Login login = new Login();
 		login.setVisible(true);
+	}
+	
+	public void transHis() {
+		this.setVisible(false);
+		TransactionHistory traH = new TransactionHistory();
+		traH.setVisible(true);
+	}
+	
+	public void sendMoney() {
+		this.setVisible(false);
+		SendMoney sM = new SendMoney();
+		sM.setVisible(true);
+	}
+	
+	public void hoSo() {
+		this.setVisible(false);
+		UserInfor sM = new UserInfor();
+		sM.setVisible(true);
 	}
 }

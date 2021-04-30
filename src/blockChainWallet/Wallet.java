@@ -64,6 +64,13 @@ public class Wallet {
 			return null;
 		}
 		
+		
+		// thu thập số dư và kiểm tra quỹ.
+		if (value <= 0f) { 
+			System.out.println("Gui qua it tien");
+			return null;
+		}
+				
 		// tạo mảng danh sách các đầu vào
 		ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
 

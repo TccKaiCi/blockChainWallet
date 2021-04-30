@@ -12,9 +12,7 @@ public class Account {
 	private String passWord;
 	private Wallet wallet;
 	private Human human;
-	
-	private String idHuman;
-	
+		
 	public Account() {
 	}
 	
@@ -23,14 +21,6 @@ public class Account {
 		this.passWord = passWord;
 		this.wallet = wallet;
 		this.human = human;
-	}
-	
-	public void setIdHuman(String id) {
-		this.idHuman = id;
-	}
-	
-	public String getIdHuman( ) {
-		return this.idHuman;
 	}
 	
 	public String getUserName() {
@@ -72,7 +62,8 @@ public class Account {
         try {
         	out.write(this.getUserName() + "|");
         	out.write(this.getPassWord() + "|");
-        	out.write(this.getIdHuman() + "|");
+        	out.write(this.getHuman().getName() + "|");
+        	out.write(this.getHuman().getAge() + "|");
         	
         	//converting byte to String 
         	String str_key = Base64.getEncoder().encodeToString(this.getWallet().getPublicKey().getEncoded());
@@ -91,9 +82,9 @@ public class Account {
             String[] inp = s.split("\\|");
             this.setUserName(inp[0]);
             this.setPassWord(inp[1]);
-            this.setIdHuman(inp[2]);
+            this.human.setName(inp[2]);
+            this.human.setAge(inp[3]);
             this.wallet = new Wallet();
-            this.human = new Human("AAA", "31");
             
             KeyFactory keyFactory = null;
             try {
@@ -102,7 +93,7 @@ public class Account {
             	e1.printStackTrace();
             }
 
-            byte[] KeyBytes  = Base64.getDecoder().decode(inp[3]);
+            byte[] KeyBytes  = Base64.getDecoder().decode(inp[4]);
             
             // get public key
             EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(KeyBytes);
@@ -116,7 +107,7 @@ public class Account {
     		this.wallet.setPublicKey(publicKey2);
     		
     		// get Private key
-    		KeyBytes  = Base64.getDecoder().decode(inp[4]);
+    		KeyBytes  = Base64.getDecoder().decode(inp[5]);
     		
     		EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(KeyBytes);
             PrivateKey privateKey =null ;

@@ -20,25 +20,25 @@ public class test {
 		
 		AccountHR accList = new AccountHR();
 		
-//		Human human1 = new Human("Nguyen Tuan Anh", "18");
-//		Human human2 = new Human("Tang Chi Chung", "18");
-//		Human human3 = new Human("Nguyen Van Thanh", "18");
-//		
-//		Account A = new Account("NTA", "123", new Wallet(), human1);
-//		Account B = new Account("TCC", "123", new Wallet(), human2);
-//		Account C = new Account("NVT", "123", new Wallet(), human3);
-//		
-//		accList.add(A);
-//		accList.add(B);
-//		accList.add(C);
-//
-//		
-//		try {
-//			accList.writeFile();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		Human human1 = new Human("Nguyen Tuan Anh", "18");
+		Human human2 = new Human("Tang Chi Chung", "18");
+		Human human3 = new Human("Nguyen Van Thanh", "18");
+		
+		Account A = new Account("NTA", "123", new Wallet(), human1);
+		Account B = new Account("TCC", "123", new Wallet(), human2);
+		Account C = new Account("NVT", "123", new Wallet(), human3);
+		
+		accList.add(A);
+		accList.add(B);
+		accList.add(C);
+
+		
+		try {
+			accList.writeFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		try {
 			accList.readFile();
