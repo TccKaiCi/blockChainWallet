@@ -40,7 +40,6 @@ public class AccountHR {
     		System.out.println(a.getUserName());
     		System.out.println(a.getPassWord());
     		System.out.println(a.getHuman().getName());
-    		System.out.println(a.getHuman().getAge());
     		System.out.println(a.getWallet().getPublicKey());
     		System.out.println(a.getWallet().getPrivateKey());
     	}
@@ -105,8 +104,7 @@ public class AccountHR {
             String s = null;
             do {
                 s = nhap.readLine();
-                Human human1 = new Human("Nguyen Tuan Anh", "18");
-                Account u = new Account("NTA", "123", new Wallet(), human1);
+                Account u = new Account();
                 if ( u.readFile(s) )
                     add(u);
             } while ( s!=null);

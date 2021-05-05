@@ -63,7 +63,6 @@ public class Account {
         	out.write(this.getUserName() + "|");
         	out.write(this.getPassWord() + "|");
         	out.write(this.getHuman().getName() + "|");
-        	out.write(this.getHuman().getAge() + "|");
         	
         	//converting byte to String 
         	String str_key = Base64.getEncoder().encodeToString(this.getWallet().getPublicKey().getEncoded());
@@ -83,7 +82,7 @@ public class Account {
             this.setUserName(inp[0]);
             this.setPassWord(inp[1]);
             this.human.setName(inp[2]);
-            this.human.setAge(inp[3]);
+
             this.wallet = new Wallet();
             
             KeyFactory keyFactory = null;
@@ -93,7 +92,7 @@ public class Account {
             	e1.printStackTrace();
             }
 
-            byte[] KeyBytes  = Base64.getDecoder().decode(inp[4]);
+            byte[] KeyBytes  = Base64.getDecoder().decode(inp[3]);
             
             // get public key
             EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(KeyBytes);
@@ -107,7 +106,7 @@ public class Account {
     		this.wallet.setPublicKey(publicKey2);
     		
     		// get Private key
-    		KeyBytes  = Base64.getDecoder().decode(inp[5]);
+    		KeyBytes  = Base64.getDecoder().decode(inp[4]);
     		
     		EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(KeyBytes);
             PrivateKey privateKey =null ;

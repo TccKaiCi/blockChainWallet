@@ -21,7 +21,6 @@ public class Register extends JFrame {
 	private JTextField tfuserName;
 	private JTextField tfpassWord;
 	private JTextField tfhoVaTen;
-	private JTextField tfTuoi;
 
 	/**
 	 * Launch the application.
@@ -83,36 +82,24 @@ public class Register extends JFrame {
 		lblMtKhu.setBounds(374, 11, 300, 31);
 		contentPane.add(lblMtKhu);
 		
-		JLabel lblHVTn = new JLabel("Họ và tên");
+		JLabel lblHVTn = new JLabel("NickName");
 		lblHVTn.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblHVTn.setBounds(10, 122, 300, 31);
 		contentPane.add(lblHVTn);
 		
-		JLabel lblTui = new JLabel("Tuổi");
-		lblTui.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblTui.setBounds(374, 122, 300, 31);
-		contentPane.add(lblTui);
-		
 		tfhoVaTen = new JTextField();
 		tfhoVaTen.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		tfhoVaTen.setColumns(10);
-		tfhoVaTen.setBounds(10, 164, 300, 50);
+		tfhoVaTen.setBounds(10, 164, 664, 50);
 		contentPane.add(tfhoVaTen);
-		
-		tfTuoi = new JTextField();
-		tfTuoi.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		tfTuoi.setColumns(10);
-		tfTuoi.setBounds(374, 164, 300, 50);
-		contentPane.add(tfTuoi);
 	}
 	
 	public void dangKy() {
 		String userName = tfuserName.getText();
 		String pass = tfpassWord.getText();
 		String hvTen = tfhoVaTen.getText();
-		String tuoi = tfTuoi.getText();
 		
-		Human human1 = new Human(hvTen, tuoi);
+		Human human1 = new Human(hvTen);
 		Account A = new Account(userName, pass, new Wallet(), human1);
 
 		Main.accList.add(A);
