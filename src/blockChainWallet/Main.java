@@ -23,7 +23,7 @@ public class Main {
 	public static Scanner inp = new Scanner(System.in);
 	public static Scanner nextInt = new Scanner(System.in);
 	public static boolean flagSys = true;
-	public static int difficulty = 3;
+	public static int difficulty = 2;
 
 	public static void main(String[] args) {	
 		// thêm các blocks vào chuỗi khối ArrayList:
@@ -31,6 +31,8 @@ public class Main {
 		//Setup Bouncey castle as a Security Provider
 		
 		walletSys= new Wallet();
+		accList = new AccountHR();
+		
 		createData();
 		
 		// tao block dau tien
@@ -41,24 +43,31 @@ public class Main {
 		// tao he thong tien phai dung truoc tao block dau tien
 		tienHeThong(walletSys);
 		
-		Login login = new Login();
-		login.setVisible(true);
+//		Login login = new Login();
+//		login.setVisible(true);
 		
-//		do {
-//			menu();
-//			
-//			do {
-//				menuUser();
-//				if ( !isChainValid() ) {
-//					System.out.printf("The System is shutting down");
-//					flagSys = false;
-//				}
-//				System.out.println();
-//			} while (flagSys);
-//		
-//			flagSys = true;
-//					
-//		}while (true);
+		do {
+			menu();
+			
+			do {
+				menuUser();
+				if ( !isChainValid() ) {
+					System.out.printf("The System is shutting down");
+					flagSys = false;
+				}
+				System.out.println();
+			} while (flagSys);
+		
+			flagSys = true;
+					
+			System.out.println("\nGet UTXOs infor");
+	        for (Map.Entry<String, TransactionOutput> entry : UTXOs.entrySet()) {
+	            System.out.println(entry.getKey() + " - ");
+	            TransactionOutput a = entry.getValue();
+	            a.display();
+	        }
+//			writeFile();
+		}while (true);
 				
 	}
 	
@@ -174,8 +183,8 @@ public class Main {
 	
 	public static void lichSuGiaoDich() {
 		for (Block block : blockchain) {
-			System.out.println("Hash: " + block.hash+ "\nPreHash: " + block.previousHash);
-			System.out.println("Time: " + block.timeStamp);
+//			System.out.println("Hash: " + block.hash+ "\nPreHash: " + block.previousHash);
+//			System.out.println("Time: " + block.timeStamp);
 			for (Transaction trans : block.transactions) {
 				String sender = StringUtil.getStringFromKey(trans.reciepient);
 				sender = StringUtil.applySha256(sender);
@@ -196,9 +205,9 @@ public class Main {
 				nguoiNhan = accList.getAccountByPublicKey(sender).getUserName();
 				
 				System.out.println(
-						"Nguoi Gui: " + nguoiGui
-						+ "\nNguoi Nhan: " + nguoiNhan
-						+ "\nGia tri: " + trans.value + "\n");
+						"" + nguoiGui
+						+ " Gui " + nguoiNhan
+						+ " : " + trans.value + "\n");
 			}
 		}
 	}
@@ -236,9 +245,7 @@ public class Main {
 	public static void resigter() {
 		System.out.println("Ho va Ten: ");
 		String user = inp.nextLine();
-		System.out.println("Tuoi: ");
-		String age = inp.nextLine();
-		Human human1 = new Human(user, age);
+		Human human1 = new Human(user);
 		
 
 		System.out.println("Ten dang nhap:");
@@ -251,18 +258,26 @@ public class Main {
 	}
 	
 	public static void createData() {
-		Human human1 = new Human("Nguyen Tuan Anh", "18");
-		Human human2 = new Human("Tang Chi Chung", "18");
-		Human human3 = new Human("Nguyen Van Thanh", "18");
+//		Human human1 = new Human("Nguyen Tuan Anh", "18");
+//		Human human2 = new Human("Tang Chi Chung", "18");
+//		Human human3 = new Human("Nguyen Van Thanh", "18");
+//		
+//		Account A = new Account("NTA", "123", new Wallet(), human1);
+//		Account B = new Account("TCC", "123", new Wallet(), human2);
+//		Account C = new Account("NVT", "123", new Wallet(), human3);
+//
+//		accList = new AccountHR();
+//		accList.add(A);
+//		accList.add(B);
+//		accList.add(C);
 		
-		Account A = new Account("NTA", "123", new Wallet(), human1);
-		Account B = new Account("TCC", "123", new Wallet(), human2);
-		Account C = new Account("NVT", "123", new Wallet(), human3);
+		try {
+			accList.readFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		accList = new AccountHR();
-		accList.add(A);
-		accList.add(B);
-		accList.add(C);
 	}
 	
 	public static void addBlock(Block newBlock) {
@@ -276,7 +291,6 @@ public class Main {
 	}
 	
 	public static void napTien(Account acc,float amount) {
-		isChainValid();
 		napTien(blockchain.get(blockchain.size() - 1), acc, amount);
 	}
 	
