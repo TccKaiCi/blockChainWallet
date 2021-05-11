@@ -8,7 +8,7 @@ import java.util.Base64;
 public class TransactionOutput {
 	public String id;
 	public PublicKey reciepient;// chủ sở hữu mới của những đồng tien.
-	public float value;// số lượng coin mà h�? sở hữu
+	public float value;// số lượng coin mà sở hữu
 	public String parentTransactionId; // id của giao dịch mà đầu ra này được tạo
 	
 	public TransactionOutput(PublicKey reciepient, float value, String parentTransactionId) {
@@ -32,14 +32,14 @@ public class TransactionOutput {
 	
 	public void writeFile(BufferedWriter out) throws IOException{
         try {
-        	out.write(this.id + "|");
+        	out.write("IdOutput: " + this.id + "|");
         	
         	//converting byte to String 
         	String str_key = Base64.getEncoder().encodeToString(this.reciepient.getEncoded());
-        	out.write(str_key + "|");
+        	out.write("SenderKey: " + str_key + "|");
         	        	
-        	out.write(this.value + "|");
-        	out.write(this.parentTransactionId + "|");
+        	out.write("Value: " + this.value + "|");
+        	out.write("parentTransactionId: " + this.parentTransactionId + "|");
         	
         } catch (Exception e) {
             System.out.println("Error in writing ");

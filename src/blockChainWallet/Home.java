@@ -37,7 +37,9 @@ public class Home extends JFrame {
 	public Home() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 250);
+		setLocationRelativeTo(null);
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -50,7 +52,7 @@ public class Home extends JFrame {
 			}
 		});
 		btnNpTin.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		btnNpTin.setBounds(10, 89, 182, 31);
+		btnNpTin.setBounds(22, 72, 182, 31);
 		contentPane.add(btnNpTin);
 		
 		JButton btnGiTin = new JButton("G\u1EEDi Ti\u1EC1n");
@@ -60,7 +62,7 @@ public class Home extends JFrame {
 			}
 		});
 		btnGiTin.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		btnGiTin.setBounds(10, 136, 182, 31);
+		btnGiTin.setBounds(22, 119, 182, 31);
 		contentPane.add(btnGiTin);
 		
 		JButton btnLchSGiao = new JButton("L\u1ECBch S\u1EED Giao d\u1ECBch");
@@ -70,7 +72,7 @@ public class Home extends JFrame {
 			}
 		});
 		btnLchSGiao.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		btnLchSGiao.setBounds(51, 178, 329, 31);
+		btnLchSGiao.setBounds(63, 161, 329, 31);
 		contentPane.add(btnLchSGiao);
 		
 		JButton btnngXut = new JButton("\u0110\u0103ng xu\u1EA5t");
@@ -80,7 +82,7 @@ public class Home extends JFrame {
 			}
 		});
 		btnngXut.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		btnngXut.setBounds(242, 220, 182, 31);
+		btnngXut.setBounds(232, 119, 182, 31);
 		contentPane.add(btnngXut);
 		
 		JLabel lblNewLabel = new JLabel("Xin ch\u00E0o," + Main.userAccount.getHuman().getName());
@@ -95,7 +97,7 @@ public class Home extends JFrame {
 			}
 		});
 		btnXemHS.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		btnXemHS.setBounds(220, 113, 182, 31);
+		btnXemHS.setBounds(232, 72, 182, 31);
 		contentPane.add(btnXemHS);
 		
 	}

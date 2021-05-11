@@ -71,19 +71,19 @@ public class Transaction {
 		// xóa đầu vào giao dịch khoi danh sách UTXO như đã chi tiêu:
 		for (TransactionInput i : inputs) {
 			if (i.UTXO == null)
-				continue; // nếu không tìm thấy Giao dịch, hãy b�? qua
+				continue; // nếu không tìm thấy Giao dịch, hãy bo qua
 			Main.UTXOs.remove(i.UTXO.id);
 		}
 		
 		return true;
 	}
 	
-	// trả v�? tổng giá trị đầu vào (UTXO)
+	// trả ve tổng giá trị đầu vào (UTXO)
 	public float getInputsValue() {
 		float total = 0;
 		for (TransactionInput i : inputs) {
 			if (i.UTXO == null)
-				continue; // nếu không tìm thấy Giao dịch, hãy b�? qua
+				continue; // nếu không tìm thấy Giao dịch, hãy bo qua
 			total += i.UTXO.value;
 		}
 		return total;
@@ -132,24 +132,28 @@ public class Transaction {
 	
 	public void writeFile(BufferedWriter out) throws IOException{
         try {
-        	out.write(this.transactionId + "|");
+        	out.write("transactionId: " + this.transactionId + "|");
         	
         	//converting byte to String 
         	String str_key = Base64.getEncoder().encodeToString(this.sender.getEncoded());
-        	out.write(str_key + "|");
+        	out.write("SenderKey: " + str_key + "|");
         	
         	//converting byte to String 
         	str_key = Base64.getEncoder().encodeToString(this.reciepient.getEncoded());
-        	out.write(str_key + "|");
+        	out.write("ReciverKey: " + str_key + "|");
         	
-        	out.write(this.value + "|");
+        	out.write("Value: " + this.value + "|");
         	out.write(
-        			Base64.getEncoder().encodeToString( this.signature ) + "|");
+        			"Signature: " + Base64.getEncoder().encodeToString( this.signature ) + "|");
     		
+
+			out.write("TransactionInput - " + inputs.size() + "|");
     		for (TransactionInput input : this.inputs) {
     			input.writeFile(out);
     		}
     		
+
+			out.write("TransactionOutput - " + outputs.size() + "|");
     		for (TransactionOutput input : this.outputs) {
     			input.writeFile(out);
     		}	

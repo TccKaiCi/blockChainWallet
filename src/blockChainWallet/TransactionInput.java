@@ -18,7 +18,7 @@ public class TransactionInput {
 	
 	public void writeFile(BufferedWriter out) throws IOException{
         try {
-        	out.write(this.transactionOutputId + "|");
+        	out.write("transactionOutputId: " + this.transactionOutputId + "|");
         	UTXO.writeFile(out);
         } catch (Exception e) {
             System.out.println("Error in writing ");

@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 public class TransactionHistory extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
+	private JTable table,table1;
 
 	/**
 	 * Launch the application.
@@ -48,14 +48,16 @@ public class TransactionHistory extends JFrame {
 	public TransactionHistory() {
 		 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 300);
+		setLocationRelativeTo(null);
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(75, 11, 263, 170);
+		scrollPane.setBounds(25, 11, 263, 170);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -84,9 +86,32 @@ public class TransactionHistory extends JFrame {
 			}
 		});
 		btnTrV.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		btnTrV.setBounds(112, 203, 182, 31);
+		btnTrV.setBounds(227, 220, 182, 31);
 		contentPane.add(btnTrV);
 		
+//		311, 11, 263, 170
+		JScrollPane scrollPanePlayer = new JScrollPane();
+		scrollPanePlayer.setBounds(311, 11, 263, 170);
+		contentPane.add(scrollPanePlayer);
+		
+		table1 = new JTable();
+		table1.setModel(new DefaultTableModel(
+				new Object[][] {
+					
+				},
+			new String[] {
+				"Người", "Số tiền"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, Object.class, Object.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPanePlayer.setViewportView(table1);
 
 		init();
 		
@@ -94,7 +119,6 @@ public class TransactionHistory extends JFrame {
 	
 	public void init() {		
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		
 		
 		for (Block block : Main.blockchain) {
 			for (Transaction trans : block.transactions) {
@@ -116,16 +140,20 @@ public class TransactionHistory extends JFrame {
 				else
 				nguoiNhan = Main.accList.getAccountByPublicKey(sender).getUserName();
 				
-//				System.out.println(
-//						"Nguoi Gui: " + nguoiGui
-//						+ "\nNguoi Nhan: " + nguoiNhan
-//						+ "\nGia tri: " + trans.value + "\n");
-				
 				model.addRow(new Object[]{nguoiGui, nguoiNhan, trans.value});
 				table.setModel(model);
 			}
 			
 		}
+		
+//		============================================================================
+		DefaultTableModel model1 = (DefaultTableModel) table1.getModel();
+		
+		for (Account a : Main.accList.getListAcc()) {
+    		model1.addRow(new Object[]{a.getUserName(), a.getWallet().getBalance()});
+			table1.setModel(model1);
+		}
+		
 	}
 	
 	private JButton btnTrV;

@@ -14,6 +14,7 @@ public class Account {
 	private Human human;
 		
 	public Account() {
+		this.human = new Human();
 	}
 	
 	public Account(String userName, String passWord, Wallet wallet, Human human) {

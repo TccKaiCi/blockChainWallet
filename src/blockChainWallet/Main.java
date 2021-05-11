@@ -43,31 +43,25 @@ public class Main {
 		// tao he thong tien phai dung truoc tao block dau tien
 		tienHeThong(walletSys);
 		
-//		Login login = new Login();
-//		login.setVisible(true);
+		Login login = new Login();
+		login.setVisible(true);
 		
-		do {
-			menu();
-			
-			do {
-				menuUser();
-				if ( !isChainValid() ) {
-					System.out.printf("The System is shutting down");
-					flagSys = false;
-				}
-				System.out.println();
-			} while (flagSys);
-		
-			flagSys = true;
-					
-			System.out.println("\nGet UTXOs infor");
-	        for (Map.Entry<String, TransactionOutput> entry : UTXOs.entrySet()) {
-	            System.out.println(entry.getKey() + " - ");
-	            TransactionOutput a = entry.getValue();
-	            a.display();
-	        }
+//		do {
+//			menu();
+//			
+//			do {
+//				menuUser();
+//				if ( !isChainValid() ) {
+//					System.out.printf("The System is shutting down");
+//					flagSys = false;
+//				}
+//				System.out.println();
+//			} while (flagSys);
+//		
+//			flagSys = true;
+//			
 //			writeFile();
-		}while (true);
+//		}while (true);
 				
 	}
 	

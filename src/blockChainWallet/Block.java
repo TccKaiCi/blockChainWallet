@@ -46,7 +46,6 @@ public class Block {
 			nonce ++;
 			hash = calculateHash();
 		}
-//		System.out.println("Block hash: " + hash + "\nPrevios Hash:" + previousHash);
 	}
 	
 	/**
@@ -68,11 +67,11 @@ public class Block {
 	
 	public void writeFile(BufferedWriter out) throws IOException{
         try {
-        	out.write(hash + "|");
-        	out.write(previousHash + "|");
-        	out.write(merkleRoot + "|");
-        	out.write(timeStamp + "|");
-        	out.write(nonce + "|");
+        	out.write("hash: " + hash + "|");
+        	out.write("preHash: " + previousHash + "|");
+        	out.write("Merkle: " + merkleRoot + "|");
+        	out.write("TimeStamp: " + timeStamp + "|");
+        	out.write("Nonce: " + nonce + "|");
 			
         	for (Transaction a : transactions) {
 				a.writeFile(out);

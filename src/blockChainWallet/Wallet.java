@@ -36,7 +36,7 @@ public class Wallet {
 	}
 	
 	/**
-	 * trả v�? số dư và lưu trữ UTXO thuộc sở hữu của ví này trong UTXOs
+	 * trả ve số dư và lưu trữ UTXO thuộc sở hữu của ví này trong UTXOs
 	 * @return
 	 */
 	public float getBalance() {
@@ -44,9 +44,8 @@ public class Wallet {
 		for (Map.Entry<String, TransactionOutput> item : Main.UTXOs.entrySet()) {
 			TransactionOutput UTXO = item.getValue();
 			
-			// nếu đầu ra thuộc v�? vi�? (nếu ti�?n thuộc v�? vi�?)
 			if (UTXO.isMine(publicKey)) { 
-				// thêm nó vào danh sách các giao dịch chưa được sử dụng của vi�?.
+				// thêm nó vào danh sách các giao dịch chưa được sử dụng
 				UTXOs.put(UTXO.id, UTXO); 
 				total += UTXO.value;
 			}
@@ -64,8 +63,6 @@ public class Wallet {
 			return null;
 		}
 		
-		
-		// thu thập số dư và kiểm tra quỹ.
 		if (value <= 0f) { 
 			System.out.println("Gui qua it tien");
 			return null;

@@ -104,6 +104,7 @@ public class AccountHR {
             String s = null;
             do {
                 s = nhap.readLine();
+                
                 Account u = new Account();
                 if ( u.readFile(s) )
                     add(u);
